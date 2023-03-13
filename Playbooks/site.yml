@@ -6,7 +6,7 @@
 
   - name: install updates (ubuntu)
     apt:
-      update: dist
+      upgrade: dist
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
