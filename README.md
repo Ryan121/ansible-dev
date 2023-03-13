@@ -1,2 +1,2 @@
 # ansible-dev
-A repo to develop and test ansible playbooks
+A repo to develop, test and run ansible playbooks
