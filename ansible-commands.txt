@@ -1,0 +1,22 @@
+ansible all --key-file ~/.ssh/ansible -i inventory -m ping
+
+ansible all -m ping
+
+ansible all --list-hosts
+
+# Extract all details about the hosts
+ansible all -m gather_facts
+ansible all -m gather_facts --limit 100.25.134.223
+
+# Update all machines using ansible command (same thing as running - sudo apt update)
+ansible all -m apt -a update_cache=true --become --ask-become-pass
+
+# Install package onto all hosts
+ansible all -m apt -a name=vim-nox --become --ask-become-pass
+
+# Update already installed apps
+ansible all -m apt -a "name=snapd state=latest" --become --ask-become-pass
+ansible all -m apt -a "upgrade=dist" --become --ask-become-pass
+
+# Run ansible playbook
+ansible-playbook --ask-become-pass install_apache.yml
