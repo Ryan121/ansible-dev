@@ -26,3 +26,4 @@ ansible all -m gather_facts --limit 100.25.134.223 | grep ansible_distribution
 
 # List ansible playbook tags
 ansible-playbook --list-tags site.yml
+ansible-playbook --tags apache --ask-become-pass site.yml
