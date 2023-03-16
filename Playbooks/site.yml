@@ -32,6 +32,13 @@
       owner: root
       group: root
       mode: 0644
+  
+  - name: Disable httpd service
+    tags: apache, httpd, ubuntu
+    service:
+      name: httpd
+      state: started
+    when: ansible_distribution == "Ubuntu"
 
 - hosts: db_servers
   become: true
