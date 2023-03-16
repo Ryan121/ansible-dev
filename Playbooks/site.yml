@@ -55,7 +55,7 @@
       state: latest
 
 - hosts: workstations
-  beomce: true
+  become: true
   tasks:
 
     - name: install unzip
