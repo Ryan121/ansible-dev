@@ -97,7 +97,7 @@
 
     - name: add sudoers file for jeff
       copy:
-        src: sudoer_jeff
+        src: ../files/sudoer_jeff
         dest: /etc/sudoers.d/jeff
         owner: root
         group: root
