@@ -24,6 +24,24 @@
       state: latest
     when: ansible_distribution == "Ubuntu"
   
+  - name: change email address for admin
+    tags: apache, httpd
+    lineinfile:
+      path: /etc/apache2/sites-available/000-default.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin jeffry@gmail.com
+    when: ansible_distribution == "Ubuntu"
+    register: apache2
+
+  - name: restart apache2
+    tags: apache2
+    service:
+      name: apache2
+      state: restarted
+    when: apache2.changed
+
+
+
   - name: copy defaul html file for site
     tags: apache, apache2, httpd
     copy: 
