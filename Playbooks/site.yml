@@ -89,6 +89,20 @@
         name: jeff
         groups: root
 
+    - name: add shh key
+      tags: always
+      authorized_key:
+        user: jeff
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO7oHOx1D7mNwySNKYg+Lvrqf35qJK6bS3pe9q6IJybt ansible"
+
+    - name: add sudoers file for jeff
+      copy:
+        src: sudoer_jeff
+        dest: /etc/sudoers.d/jeff
+        owner: root
+        group: root
+        mode: 0440
+
 - hosts: workstations
   become: true
   tasks:
