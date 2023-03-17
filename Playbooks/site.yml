@@ -25,7 +25,7 @@
     when: ansible_distribution == "Ubuntu"
   
   - name: change email address for admin
-    tags: apache, httpd
+    tags: apache
     lineinfile:
       path: /etc/apache2/sites-available/000-default.conf
       regexp: '^ServerAdmin'
@@ -43,7 +43,7 @@
 
 
   - name: copy defaul html file for site
-    tags: apache, apache2, httpd
+    tags: apache, apache2
     copy: 
       src: ../files/default_site.html
       dest: /var/www/html/index.html
@@ -51,10 +51,10 @@
       group: root
       mode: 0644
   
-  - name: Disable httpd service
-    tags: apache, httpd, ubuntu
+  - name: Disable apache2 service
+    tags: apache, ubuntu
     service:
-      name: httpd
+      name: apache2
       state: started
     when: ansible_distribution == "Ubuntu"
 
