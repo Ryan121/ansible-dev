@@ -79,6 +79,16 @@
       name: samba
       state: latest
 
+- hosts: all
+  become: true
+  tasks:
+
+    - name: create jeff user
+      tags: always
+      user:
+        name: jeff
+        groups: root
+
 - hosts: workstations
   become: true
   tasks:
