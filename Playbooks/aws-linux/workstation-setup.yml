@@ -1,0 +1,95 @@
+- name: Update and set up workstations
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+  - name: install epel
+    shell: amazon-linux-extras install epel
+
+  - name: update currently installed packages
+    ansible.builtin.yum:
+      name: '*'
+      state: latest  
+  
+  - name: install chromium browser
+    ansible.builtin.yum:
+      name: chromium
+      state: latest
+  
+  - name: install 7-zip
+    ansible.builtin.yum:
+      name: p7zip
+      state: latest
+  
+  - name: install tkinter for python3
+    ansible.builtin.yum:
+      name: python3-tkinter
+      state: latest
+  
+  - name: install pip for python3
+    ansible.builtin.yum:
+      name: python3-pip
+      state: latest
+
+  - name: force-reinstall urllib3 to older version to work around ssl issue
+    ansible.builtin.pip:
+      name: urllib3==1.26.6
+      state: "forcereinstall"
+
+  - name: install docker
+    ansible.builtin.yum:
+      name: docker
+      state: latest
+  - name: add ec2-user to docker group
+    user:
+      name: 'ec2-user'
+      groups: docker
+      append: yes
+  - name: start docker service
+    ansible.builtin.systemd:
+      name: 'docker.service'
+      state: started
+  - name: enable docker service
+    ansible.builtin.systemd:
+      name: 'docker.service'
+      enabled: true
+
+  - name: install docker compose via pip (for ec2-user)  
+    become: true
+    become_user: "ec2-user"
+    ansible.builtin.pip:
+      name: 'docker-compose'
+      
+
+  - name: install google chrome (for kibana etc.)
+    ansible.builtin.yum:
+      name: https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+      state: present
+  - name: create symlink for chrome
+    ansible.builtin.file:
+      src: /usr/bin/google-chrome-stable 
+      dest: /usr/bin/chromium
+      state: link
+
+  - name: add RPM key required for vscode repo
+    ansible.builtin.rpm_key:
+      key: https://packages.microsoft.com/keys/microsoft.asc
+      state: present
+  - name: add VSCode repo to yum repolist
+    ansible.builtin.yum_repository:
+      name: code
+      description: Visual Studio Code
+      baseurl: 'https://packages.microsoft.com/yumrepos/vscode'
+      enabled: true
+      gpgcheck: true
+      gpgkey: 'https://packages.microsoft.com/keys/microsoft.asc'
+      file: vscode
+  - name: update yum cache and install VSCode
+    ansible.builtin.yum:
+      name: code
+      state: latest
+      update_cache: true
+  
+  - name: install libreoffice
+    shell: amazon-linux-extras install libreoffice
